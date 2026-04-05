@@ -1,4 +1,4 @@
-package com.fb.formats;
+package com.github.fbongcam.formats.m3u;
 
 import java.util.ArrayList;
 import java.util.Arrays;
