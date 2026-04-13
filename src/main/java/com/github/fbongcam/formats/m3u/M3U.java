@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 /**
  * Base class for M3U playlist format
- *
+ * <p>
  * Copyright (c) 2024 fbongcam
  * All rights reserved.
  */
@@ -13,6 +13,7 @@ import java.util.Arrays;
 public class M3U {
     public static final String TAG = "M3U";
     public static final String TYPE = "M3U";
+
     public enum META_TAG {
         EXTM3U("#EXTM3U"),
         EXTENC("#EXTENC"),
@@ -42,27 +43,26 @@ public class M3U {
             return tag;
         }
     }
+
     public static final String FILE_EXTENSION = "m3u";
     protected String playlistName;
-    protected ArrayList<String> filePaths;
+    protected ArrayList<String> filePaths = new ArrayList<>();
 
     public M3U() {
-        this.filePaths = new ArrayList<>();
     }
-    
+
     /**
-     * 
+     *
      * @param playlistName Name of the playlist
      */
     public M3U(String playlistName) {
-        this.filePaths = new ArrayList<String>();
         this.playlistName = playlistName;
     }
-    
+
     /**
-     * 
+     *
      * @param playlistName Name of the playlist
-     * @param filePaths Paths to each track
+     * @param filePaths    Paths to each track
      */
     public M3U(String playlistName, ArrayList<String> filePaths) {
         this.playlistName = playlistName;
@@ -70,9 +70,9 @@ public class M3U {
     }
 
     /**
-     * 
+     *
      * @param playlistName Name of the playlist
-     * @param filePaths Paths to each track
+     * @param filePaths    Paths to each track
      */
     public M3U(String playlistName, String[] filePaths) {
         this.playlistName = playlistName;
@@ -90,11 +90,10 @@ public class M3U {
     public void addFilePath(String path) {
         this.filePaths.add(path);
     }
-    
+
     public String getM3U() {
         String data = "";
-        for (int i = 0; i < filePaths.size(); i++)
-        {
+        for (int i = 0; i < filePaths.size(); i++) {
             data += filePaths.get(i) + "\n\n";
         }
         return data;
@@ -103,7 +102,7 @@ public class M3U {
     public void setPlaylistName(String playlistName) {
         this.playlistName = playlistName;
     }
-    
+
     public String getPlaylistName() {
         return playlistName;
     }
@@ -111,4 +110,10 @@ public class M3U {
     public ArrayList<String> getFilePaths() {
         return filePaths;
     }
+
+    @Override
+    public String toString() {
+        return "M3U [playlistName=" + playlistName + ", filePaths=" + filePaths + "]";
+    }
+
 }
