@@ -16,3 +16,6 @@ coverage/
 # Editor settings
 .vscode/
 .vscode
+
+/target
+target/
