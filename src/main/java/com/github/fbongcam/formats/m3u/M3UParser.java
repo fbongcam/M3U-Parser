@@ -9,10 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class M3UParser {
-    private final String TAG = "M3UParser";
-    private M3U m3u;
-    private M3U_EXTENDED m3uExtended;
-    private boolean isExtended = false;
+    private final String TAG = "M3U Parser";
+    private M3U m3u = new M3U();
     private static final Pattern m3uTagPattern = Pattern.compile("^#[A-Z0-9]+:.*$");
     private static final Pattern durationPattern = Pattern.compile("^([0-9]*),");
 
@@ -21,7 +19,8 @@ public class M3UParser {
         public static final String DATA = "data";
     }
 
-    public M3UParser() {}
+    public M3UParser() {
+    }
 
     /**
      * Parse M3U file
@@ -34,14 +33,16 @@ public class M3UParser {
         String line = reader.readLine();
         line = line.trim();
 
+        boolean isExtended = false;
+
         // Determine if playlist is of extended format or not
-        if (line.startsWith(M3U.META_TAG.EXTM3U.getTag()) || line.startsWith(M3U.META_TAG.EXTINF.getTag())) {
-            m3uExtended = new M3U_EXTENDED();
+        if (line.startsWith(M3UMetaTag.EXTM3U.getTag()) || line.startsWith(M3UMetaTag.EXTINF.getTag())) {
             isExtended = true;
-        }
-        else {
-            m3u = new M3U();
+        } else {
             isExtended = false;
+            // If file not of extended type,
+            // we need to catch the first line as it will contain first file path
+            m3u.addFilePath(line);
         }
 
         while ((line = reader.readLine()) != null) {
@@ -65,7 +66,7 @@ public class M3UParser {
                         data = array[1];
                         // Clean the tag
                         tag_ = tag_.replace("#", "");
-                        m3uExtended.setCustomComment(tag_, data);
+                        m3u.setCustomTag(tag_, data);
                     }
                 }
             }
@@ -78,31 +79,35 @@ public class M3UParser {
             }
         }
 
+        // use filename as playlist name if not already set
+        if (m3u.getName() == null) {
+            m3u.setName(file.getName());
+        }
+
+        m3u.setFile(file);
+
         reader.close();
-        System.out.println(String.format("===%s===\nParsed: %s", TAG, m3u == null ? m3uExtended.toString() : m3u.toString()));
+        System.out.println(String.format("===%s===\nParsed: %s", TAG, m3u));
     }
 
     private boolean processCommonTags(String line, BufferedReader reader) throws IOException {
-        for (M3U.META_TAG tag : M3U.META_TAG.values()) {
+        for (M3UMetaTag tag : M3UMetaTag.values()) {
             if (line.startsWith(tag.getTag())) {
                 HashMap<String, String> map = m3uTagToMap(line);
                 String dataString = map.getOrDefault(MAP_KEYS.DATA, "");
 
                 switch (tag) {
                     case PLAYLIST:
-                        //============== PLAYLIST ==============
-                        if (isExtended) {
-                            m3uExtended.setPlaylistName(dataString);
-                        } else {
-                            m3u.setPlaylistName(dataString);
-                        }
+                        // ============== PLAYLIST ==============
+                        m3u.setDisplayTitle(dataString);
+                        m3u.setName(dataString);
                         return true;
                     case EXTENC:
-                        //============== EXTENC ==============
+                        // ============== EXTENC ==============
                         // TODO Process inputString for #EXTENC tag
                         return true;
                     case EXTINF:
-                        //============== EXTINF ==============
+                        // ============== EXTINF ==============
 
                         // EXTINF data
                         // duration, artist - track
@@ -110,7 +115,7 @@ public class M3UParser {
                         assert dataString != null;
                         if (!dataString.isEmpty()) {
                             Integer duration = extractDuration(dataString);
-                            m3uExtended.addTrackDuration(duration);
+                            m3u.addTrackDuration(duration);
 
                             // Check track title format
                             String[] extinf_ = dataString.split(durationPattern.pattern(), 2);
@@ -119,51 +124,51 @@ public class M3UParser {
                                 if (extinf_artistTrack.matches("^(.+?)\\s-\\s(.+)$")) {
                                     // Artist - Track title
                                     String[] artistTrack = extinf_artistTrack.split("\\s-\\s");
-                                    m3uExtended.addArtistName(artistTrack[0]);
-                                    m3uExtended.addTrackTitle(artistTrack[1]);
+                                    m3u.addArtistName(artistTrack[0]);
+                                    m3u.addTrackTitle(artistTrack[1]);
                                 } else {
                                     // Track title
                                     System.out.println(TAG + ": Artist missing for track " + extinf_artistTrack);
-                                    m3uExtended.addArtistName(null);
-                                    m3uExtended.addTrackTitle(extinf_artistTrack);
+                                    m3u.addArtistName(null);
+                                    m3u.addTrackTitle(extinf_artistTrack);
                                 }
                             }
                         }
 
                         // Get file URL
                         line = reader.readLine();
-                        m3uExtended.addFilePath(line.trim());
+                        m3u.addFilePath(line.trim());
                         return true;
                     case EXTGRP:
-                        //============== EXTGRP ==============
+                        // ============== EXTGRP ==============
                         // TODO Process inputString for #EXTGRP tag
                         return true;
                     case EXTALB:
-                        //============== EXTALB ==============
+                        // ============== EXTALB ==============
                         // TODO Process inputString for #EXTALB tag
                         return true;
                     case EXTART:
-                        //============== EXTART ==============
+                        // ============== EXTART ==============
                         // TODO Process inputString for #EXTART tag
                         return true;
                     case EXTGENRE:
-                        //============== EXTGENRE ==============
+                        // ============== EXTGENRE ==============
                         // TODO Process inputString for #EXTGENRE tag
                         return true;
                     case EXTM3A:
-                        //============== EXTM3A ==============
+                        // ============== EXTM3A ==============
                         // TODO Process inputString for #EXTM3A tag
                         return true;
                     case EXTBYT:
-                        //============== EXTBYT ==============
+                        // ============== EXTBYT ==============
                         // TODO Process inputString for #EXTBYT tag
                         return true;
                     case EXTBIN:
-                        //============== EXTBIN ==============
+                        // ============== EXTBIN ==============
                         // TODO Process inputString for #EXTBIN tag
                         return true;
                     case EXTIMG:
-                        //============== EXTIMG ==============
+                        // ============== EXTIMG ==============
                         // TODO Process inputString for #EXTIMG tag
                         return true;
                 }
@@ -199,9 +204,6 @@ public class M3UParser {
      * @return M3U or M3UExtended
      */
     public M3U getM3u() {
-        if (isExtended) {
-            return m3uExtended;
-        }
         return m3u;
     }
 }
