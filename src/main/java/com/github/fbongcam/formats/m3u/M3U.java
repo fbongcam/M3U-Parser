@@ -151,7 +151,12 @@ public class M3U {
         if (!customTags.isEmpty()) {
             // Add custom tags
             for (Map.Entry<String, String> entry : customTags.entrySet()) {
-                data += String.format("\n#%s:%s", entry.getKey().toUpperCase(), entry.getValue());
+                // Add KEY
+                data += String.format("\n#%s", entry.getKey().toUpperCase());
+                // Add DATA/VALUE
+                if (entry.getValue() != null && !entry.getValue().isEmpty()) {
+                    data += String.format(":%s", entry.getValue());
+                }
             }
         }
 
