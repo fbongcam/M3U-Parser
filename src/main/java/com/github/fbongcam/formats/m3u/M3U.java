@@ -1,6 +1,10 @@
 package com.github.fbongcam.formats.m3u;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,6 +26,7 @@ public class M3U {
     private File file;
     private String name;
     private String ID;
+
     private String displayTitle = "";
     private ArrayList<String> filePaths = new ArrayList<String>();
     private ArrayList<String> artistNames = new ArrayList<String>();
@@ -114,6 +119,39 @@ public class M3U {
         this.artistNames = new ArrayList<>(Arrays.asList(artistNames));
         this.trackTitles = new ArrayList<>(Arrays.asList(trackTitles));
         this.trackDurations = new ArrayList<>(Arrays.asList(trackDurations));
+    }
+
+    /**
+     * Reads every line in the M3U file as an array
+     * @return M3U as an array
+     */
+    public String[] getLinesAsArray() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+
+            String line = reader.readLine();
+            line = line.trim();
+
+            ArrayList<String> lines = new ArrayList<>();
+
+            while ((line = reader.readLine()) != null) {
+                // Make sure line is not empty
+                if (line.isEmpty()) {
+                    continue;
+                }
+
+                lines.add(line);
+            }
+            
+            return lines.toArray(new String[0]);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File could not be found");
+        } catch (IOException e) {
+            System.out.println("File could not be read");
+        }
+
+        return new String[0];
     }
 
     /**
@@ -245,7 +283,7 @@ public class M3U {
             return true;
         }
         if (obj instanceof String) {
-            return ((String) obj).isBlank();
+            return ((String) obj).codePoints().allMatch(Character::isWhitespace);
         }
         if (obj instanceof Collection<?>) {
             return ((Collection<?>) obj).isEmpty();

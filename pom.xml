@@ -1,32 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.fbongcam.formats.m3u</groupId>
-    <artifactId>m3u-parser</artifactId>
-    <version>0.3</version>
+    <!-- JitPack coordinates: com.github.fbongcam:M3U-Parser:<git-tag> -->
+    <groupId>com.github.fbongcam</groupId>
+    <artifactId>M3U-Parser</artifactId>
+    <version>0.3.1</version>
     <packaging>jar</packaging>
 
     <name>M3U Parser</name>
-    <description>A parser for M3U and M3U extended files</description>
+    <description>A parser for M3U and M3U Extended playlist files.</description>
+    <url>https://github.com/fbongcam/M3U-Parser</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>fbongcam</name>
+            <url>https://github.com/fbongcam</url>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:https://github.com/fbongcam/M3U-Parser.git</connection>
+        <developerConnection>scm:git:ssh://git@github.com/fbongcam/M3U-Parser.git</developerConnection>
+        <url>https://github.com/fbongcam/M3U-Parser</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <dependencies>
-        <!-- Add your dependencies here -->
-    </dependencies>
-
-    <distributionManagement>
-        <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/fbongcam/M3U-Parser</url>
-        </repository>
-    </distributionManagement>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

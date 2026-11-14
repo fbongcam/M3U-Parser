@@ -11,7 +11,8 @@ import java.util.regex.Pattern;
 public class M3UParser {
     private final String TAG = "M3U Parser";
     private M3U m3u = new M3U();
-    private static final Pattern m3uTagPattern = Pattern.compile("^#[A-Z0-9]+:.*$");
+    private static final Pattern m3uTagPattern =
+        Pattern.compile("^#([A-Z0-9]+)(?::(.*))?$");
     private static final Pattern durationPattern = Pattern.compile("^([0-9]*),");
 
     private final static class MAP_KEYS {
@@ -58,15 +59,15 @@ public class M3UParser {
                 // Check for custom M3U tags
                 if (isExtended && line.startsWith("#")) {
                     String tag_;
-                    String data;
+                    String value;
                     Matcher matcher = m3uTagPattern.matcher(line);
                     if (matcher.matches()) {
                         String[] array = line.split(":", 2);
                         tag_ = array[0];
-                        data = array[1];
+                        value = array[1];
                         // Clean the tag
                         tag_ = tag_.replace("#", "");
-                        m3u.setCustomTag(tag_, data);
+                        m3u.setCustomTag(tag_, value);
                     }
                 }
             }
