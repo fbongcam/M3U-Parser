@@ -5,7 +5,7 @@ plugins {
 
 // JitPack provides VERSION when it builds a Git tag.
 group = System.getenv('GROUP') ?: 'com.github.fbongcam'
-version = System.getenv('VERSION') ?: '0.3.1'
+version = System.getenv('VERSION') ?: '0.3.2'
 
 description = 'A parser for M3U and M3U Extended playlist files.'
 

@@ -11,8 +11,7 @@ import java.util.regex.Pattern;
 public class M3UParser {
     private final String TAG = "M3U Parser";
     private M3U m3u = new M3U();
-    private static final Pattern m3uTagPattern =
-        Pattern.compile("^#([A-Z0-9]+)(?::(.*))?$");
+    private static final Pattern m3uTagPattern = Pattern.compile("^#([A-Z0-9]+)(?::(.*))?$");
     private static final Pattern durationPattern = Pattern.compile("^([0-9]*),");
 
     private final static class MAP_KEYS {
@@ -60,13 +59,13 @@ public class M3UParser {
                 if (isExtended && line.startsWith("#")) {
                     String tag_;
                     String value;
+
                     Matcher matcher = m3uTagPattern.matcher(line);
+
                     if (matcher.matches()) {
-                        String[] array = line.split(":", 2);
-                        tag_ = array[0];
-                        value = array[1];
-                        // Clean the tag
-                        tag_ = tag_.replace("#", "");
+                        tag_ = matcher.group(1);
+                        value = matcher.group(2) != null ? matcher.group(2) : "";
+
                         m3u.setCustomTag(tag_, value);
                     }
                 }
@@ -180,12 +179,16 @@ public class M3UParser {
 
     private HashMap<String, String> m3uTagToMap(String line) {
         HashMap<String, String> map = new HashMap<>();
+
         Matcher matcher = m3uTagPattern.matcher(line);
+
         if (matcher.matches()) {
-            String[] array = line.split(":", 2);
-            map.put(MAP_KEYS.TAG, array[0]);
-            map.put(MAP_KEYS.DATA, array[1]);
+            map.put(MAP_KEYS.TAG, matcher.group(1));
+            map.put(
+                    MAP_KEYS.DATA,
+                    matcher.group(2) == null ? "" : matcher.group(2));
         }
+
         return map;
     }
 
