@@ -1,0 +1,31 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+// JitPack provides VERSION when it builds a Git tag.
+group = System.getenv('GROUP') ?: 'com.github.fbongcam'
+version = System.getenv('VERSION') ?: '0.3.1'
+
+description = 'A parser for M3U and M3U Extended playlist files.'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    withSourcesJar()
+    withJavadocJar()
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    // Compile against the Java 8 API even when Gradle runs on a newer JDK.
+    options.release = 8
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+}

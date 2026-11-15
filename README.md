@@ -5,7 +5,7 @@ A Java library for parsing M3U and M3U Extended playlist files.
 ## Requirements
 
 - Java 8 or newer
-- Maven (when building from source)
+- Maven or Gradle (when building from source)
 
 ## Usage
 
@@ -18,7 +18,11 @@ parser.parse(file);
 M3U playlist = parser.getM3u();
 ```
 
-## Maven dependency (JitPack)
+## Installation
+
+The library is available through [JitPack](https://jitpack.io/). Replace `0.3.1` in the examples below with the Git tag you want to use.
+
+### Maven
 
 Add the JitPack repository to your `pom.xml`:
 
@@ -31,7 +35,7 @@ Add the JitPack repository to your `pom.xml`:
 </repositories>
 ```
 
-Then add the library dependency. Replace `0.3.1` with the Git tag you want to use:
+Then add the dependency:
 
 ```xml
 <dependency>
@@ -41,8 +45,54 @@ Then add the library dependency. Replace `0.3.1` with the Git tag you want to us
 </dependency>
 ```
 
+### Gradle (Groovy DSL)
+
+Add the JitPack repository in your `build.gradle`:
+
+```groovy
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+```
+
+Then add the dependency:
+
+```groovy
+dependencies {
+    implementation 'com.github.fbongcam:M3U-Parser:0.3.1'
+}
+```
+
+### Gradle (Kotlin DSL)
+
+If your project uses `build.gradle.kts`, add:
+
+```kotlin
+repositories {
+    maven(url = "https://jitpack.io")
+}
+```
+
+Then add the dependency:
+
+```kotlin
+dependencies {
+    implementation("com.github.fbongcam:M3U-Parser:0.3.1")
+}
+```
+
 ## Build locally
+
+With Maven:
 
 ```bash
 mvn clean verify
 ```
+
+With Gradle:
+
+```bash
+gradle clean build
+```
+
+The project supports both build systems. JitPack detects `build.gradle` and uses Gradle to build tagged releases.
