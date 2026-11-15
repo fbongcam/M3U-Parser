@@ -92,7 +92,7 @@ public class M3UParser {
 
     private boolean processCommonTags(String line, BufferedReader reader) throws IOException {
         for (M3UMetaTag tag : M3UMetaTag.values()) {
-            if (line.startsWith(tag.getTag())) {
+            if (line.equals(tag.getTag()) || line.startsWith(tag.getTag() + ":")) {
                 HashMap<String, String> map = m3uTagToMap(line);
                 String dataString = map.getOrDefault(MAP_KEYS.DATA, "");
 
