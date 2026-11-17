@@ -7,7 +7,7 @@
     <!-- JitPack coordinates: com.github.fbongcam:M3U-Parser:<git-tag> -->
     <groupId>com.github.fbongcam</groupId>
     <artifactId>M3U-Parser</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4</version>
     <packaging>jar</packaging>
 
     <name>M3U Parser</name>
