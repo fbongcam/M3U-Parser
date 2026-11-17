@@ -87,7 +87,6 @@ public class M3UParser {
         m3u.setFile(file);
 
         reader.close();
-        System.out.println(String.format("===%s===\nParsed: %s", TAG, m3u));
     }
 
     private boolean processCommonTags(String line, BufferedReader reader) throws IOException {
@@ -210,4 +209,5 @@ public class M3UParser {
     public M3U getM3u() {
         return m3u;
     }
+
 }

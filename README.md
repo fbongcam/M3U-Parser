@@ -20,7 +20,7 @@ M3U playlist = parser.getM3u();
 
 ## Installation
 
-The library is available through [JitPack](https://jitpack.io/). Replace `0.3.3` in the examples below with the Git tag you want to use.
+The library is available through [JitPack](https://jitpack.io/). Replace `0.3.4` in the examples below with the Git tag you want to use.
 
 ### Maven
 
@@ -41,7 +41,7 @@ Then add the dependency:
 <dependency>
     <groupId>com.github.fbongcam</groupId>
     <artifactId>M3U-Parser</artifactId>
-    <version>0.3.3</version>
+    <version>0.3.4</version>
 </dependency>
 ```
 
@@ -59,7 +59,7 @@ Then add the dependency:
 
 ```groovy
 dependencies {
-    implementation 'com.github.fbongcam:M3U-Parser:0.3.3'
+    implementation 'com.github.fbongcam:M3U-Parser:0.3.4'
 }
 ```
 
@@ -77,7 +77,7 @@ Then add the dependency:
 
 ```kotlin
 dependencies {
-    implementation("com.github.fbongcam:M3U-Parser:0.3.3")
+    implementation("com.github.fbongcam:M3U-Parser:0.3.4")
 }
 ```
 

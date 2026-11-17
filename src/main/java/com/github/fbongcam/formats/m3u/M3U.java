@@ -23,9 +23,10 @@ public class M3U {
     public static final String TAG = "M3U";
     public static final String FILE_EXTENSION = "m3u";
 
+    private final String id;
+
     private File file;
     private String name;
-    private String ID;
 
     private String displayTitle = "";
     private ArrayList<String> filePaths = new ArrayList<String>();
@@ -38,7 +39,7 @@ public class M3U {
      * Creates an empty M3U playlist.
      */
     public M3U() {
-        this.ID = UUID.randomUUID().toString();
+        this.id = UUID.randomUUID().toString();
     }
 
     public M3U(ArrayList<String> filePaths) {
@@ -143,6 +144,7 @@ public class M3U {
                 lines.add(line);
             }
             
+            reader.close();
             return lines.toArray(new String[0]);
 
         } catch (FileNotFoundException e) {
@@ -453,14 +455,38 @@ public class M3U {
     }
 
     public String getID() {
-        return this.ID;
+        return this.id;
     }
 
     @Override
     public String toString() {
-        return "M3U [file=" + file + ", name=" + name + ", ID=" + ID + ", displayTitle=" + displayTitle + ", filePaths="
-                + filePaths + ", artistNames=" + artistNames + ", trackTitles=" + trackTitles + ", trackDurations="
-                + trackDurations + ", customTags=" + customTags + "]";
+        String s1 = "[FILE] = " + file + "\n[NAME] = " + name + "\n[ID] = " + id + "\n[DISPLAY_TITLE] = " + displayTitle + "\n[CUSTOM_TAGS] = " + customTags;
+
+        String s2 = "[FILE_PATHS] = {";
+        for (String path : filePaths) {
+            s2 += String.format("\n\t%s,", path);
+        }
+        s2 += "\n}";
+
+        String s3 = "[ARTIST_NAMES] = {";
+        for (String artistName : artistNames) {
+            s3 += String.format("\n\t%s,", artistName);
+        }
+        s3 += "\n}";
+
+        String s4 = "[TRACK_TITLES] = {";
+        for (String trackTitle : trackTitles) {
+            s4 += String.format("\n\t%s,", trackTitle);
+        }
+        s4 += "\n}";
+
+        String s5 = "[TRACK_DURATIONS] = {";
+        for (int trackDuration : trackDurations) {
+            s5 += String.format("\n\t%d,", trackDuration);
+        }
+        s5 += "\n}";
+
+        return String.join("\n", s1, s2, s3, s4, s5);
     }
 
 }
